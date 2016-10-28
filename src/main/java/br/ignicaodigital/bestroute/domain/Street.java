@@ -38,7 +38,8 @@ public class Street {
 	}
 
 	public Boolean connects(Location source, Location target) {
-		return (this.start.is(source) && this.end.is(target)) || (this.start.is(target) && this.end.is(source));
+		return (this.start.is(source) && this.end.is(target)) 
+				|| (this.start.is(target) && this.end.is(source));
 	}
 	
 }

@@ -1,6 +1,10 @@
 package br.ignicaodigital.bestroute.domain;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -19,33 +23,7 @@ public class LocationTest {
 	}
 	
 	@Test
-	public void shouldIdentifyNeighbours(){
-		Location location = new Location(1, 1);
-		location.identifyNeighbours();
-		assertEquals("(1,2)", location.goingToNorthNeighbour().print());
-		assertEquals("(1,0)", location.goingToSouthNeighbour().print());
-		assertEquals("(2,1)", location.goingToEastNeighbour().print());
-		assertEquals("(0,1)", location.goingToWestNeighbour().print());
-	}
-	
-	@Test
-	public void originShouldNotHaveWestOrSouthNeighbours(){
-		Location location = new Location(0, 0);
-		location.identifyNeighbours();
-		assertEquals(location, location.goingToSouthNeighbour());
-		assertEquals(location, location.goingToWestNeighbour());
-	}
-	
-	@Test
-	public void originShouldHaveEastAndNorthNeighbours(){
-		Location location = new Location(0, 0);
-		location.identifyNeighbours();
-		assertNotNull(location.goingToNorthNeighbour());
-		assertNotNull(location.goingToEastNeighbour());
-	}
-	
-	@Test
-	public void OneOneShouldNotBeEqualToOneTwo(){
+	public void oneOneShouldNotBeEqualToOneTwo(){
 		Location a = new Location(1, 1);
 		Location b = new Location(1, 2);
 		
@@ -53,11 +31,26 @@ public class LocationTest {
 	}
 	
 	@Test
-	public void OneOneShouldBeEqualToOneOne(){
+	public void oneOneShouldBeEqualToOneOne(){
 		Location a = new Location(1, 1);
 		Location b = new Location(1, 1);
 		
 		assertEquals(Boolean.FALSE, a.isNot(b));
+	}
+	
+	@Test
+	public void zeroZeroShouldBeEastNeighbourOfFifthZeroWhenThereIsOnlyThemInTheMap(){
+		Location origin = Location.at(0, 0);
+		Location target = Location.at(50, 0);
+		
+		City mockedCity = mock(City.class);
+		when(mockedCity.locations()).thenReturn(Arrays.asList(origin, target));
+		
+		origin.identifyNeighboursInside(mockedCity);
+		
+		assertTrue(origin.hasEastNeighbourAt(target));
+		assertTrue(origin.isNeighbourOf(target));
+		
 	}
 	
 }

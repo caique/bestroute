@@ -6,9 +6,10 @@ import java.util.List;
 
 public class Location implements Comparable<Location>{
 
-	int x;
-	int y;
+	final int x;
+	final int y;
 	int acummulatedSpeed;
+	Boolean wasVisited;
 
 	private Location northNeighbour;
 	private Location southNeighbour;
@@ -29,12 +30,9 @@ public class Location implements Comparable<Location>{
 			this.y = y;
 		}
 	}
-
-	public int compareTo(Location other) {
-		if(this.acummulatedSpeed <= other.acummulatedSpeed) return -1;
-		if(this.acummulatedSpeed >= other.acummulatedSpeed) return 1;
-
-		return 0;
+	
+	public static Location at(int x, int y) {
+		return new Location(x, y);
 	}
 	
 	public void identifyNeighbours() {
@@ -49,45 +47,43 @@ public class Location implements Comparable<Location>{
 	
 	public void identifyNeighboursInside(City city) {
 		for(Location location : city.locations()){
-			if(this.hasNorthNeighbourAt(location)) this.northNeighbour = location;
-			if(this.hasSouthNeighbourAt(location)) this.southNeighbour = location;
-			if(this.hasEastNeighbourAt(location)) this.eastNeighbour = location;
-			if(this.hasWestNeighbourAt(location)) this.westNeighbour = location;
+			if(this.shouldHaveNorthNeighbourAt(location)) this.northNeighbour = location;
+			if(this.shouldHaveSouthNeighbourAt(location)) this.southNeighbour = location;
+			if(this.shouldHaveEastNeighbourAt(location)) this.eastNeighbour = location;
+			if(this.shouldHaveWestNeighbourAt(location)) this.westNeighbour = location;
 		}
 	}
 
-	private boolean hasWestNeighbourAt(Location location) {
+	private boolean shouldHaveWestNeighbourAt(Location location) {
 		return this.intersectsInYWith(location)
 				&& this.x > location.x
 				&& ((this.westNeighbour == null) || (this.westNeighbour.x < location.x));
 	}
 
-	private Boolean hasEastNeighbourAt(Location location) {
+	private Boolean shouldHaveEastNeighbourAt(Location location) {
 		return this.intersectsInYWith(location)
 				&& this.x < location.x
 				&& ((this.eastNeighbour == null) || (this.eastNeighbour.x > location.x));
 	}
 
-	private Boolean hasSouthNeighbourAt(Location location) {
+	private Boolean shouldHaveSouthNeighbourAt(Location location) {
 		return this.intersectsInXWith(location)
 				&& this.y > location.y
 				&& ((this.southNeighbour == null) || (this.southNeighbour.y < location.y));
 	}
 
-	private Boolean hasNorthNeighbourAt(Location location) {
+	private Boolean shouldHaveNorthNeighbourAt(Location location) {
 		return this.intersectsInXWith(location)
 			&& this.y < location.y
 			&& ((this.northNeighbour == null) || (this.northNeighbour.y > location.y));
 	}
-
+	
 	private Boolean intersectsInXWith(Location location) {
-		return this.x == location.x
-			&& this.y != location.y;
+		return this.x == location.x;
 	}
 	
 	private Boolean intersectsInYWith(Location location) {
-		return this.y == location.y
-			&& this.x != location.x;
+		return this.y == location.y;
 	}
 
 	public String print(){
@@ -98,28 +94,27 @@ public class Location implements Comparable<Location>{
 		.append(")").toString();
 	}
 	
-	public Location goingToNorthNeighbour() {
-		return nextLocationGoingTo(northNeighbour);
-	}
-
-	public Location goingToSouthNeighbour() {
-		return nextLocationGoingTo(southNeighbour);
-	}
-	
-	public Location goingToEastNeighbour() {
-		return nextLocationGoingTo(eastNeighbour);
+	public Boolean isNeighbourOf(Location location){
+		return this.hasNorthNeighbourAt(location)
+				|| this.hasSouthNeighbourAt(location)
+				|| this.hasEastNeighbourAt(location)
+				|| this.hasWestNeighbourAt(location);
 	}
 	
-	public Location goingToWestNeighbour() {
-		return nextLocationGoingTo(westNeighbour);
+	public Boolean hasNorthNeighbourAt(Location location){
+		return this.has(northNeighbour) && this.northNeighbour.is(location);
 	}
-
-	private Location nextLocationGoingTo(Location target) {
-		if(this.has(target)){
-			return target;
-		}
-		
-		return this;
+	
+	public Boolean hasSouthNeighbourAt(Location location){
+		return this.has(southNeighbour) && this.southNeighbour.is(location);
+	}
+	
+	public Boolean hasEastNeighbourAt(Location location){
+		return this.has(eastNeighbour) && this.eastNeighbour.is(location);
+	}
+	
+	public Boolean hasWestNeighbourAt(Location location){
+		return this.has(westNeighbour) && this.westNeighbour.is(location);
 	}
 	
 	public Boolean has(Location neighbour) {
@@ -127,6 +122,7 @@ public class Location implements Comparable<Location>{
 	}
 	
 	public Boolean is(Location target) {
+		if(target == null) return Boolean.FALSE;
 		return (this.x == target.x) && (this.y == target.y);
 	}
 	
@@ -142,10 +138,6 @@ public class Location implements Comparable<Location>{
 		return previous;
 	}
 	
-	public Direction comesFrom(){
-		return Direction.connecting(this, previous);
-	}
-
 	public List<Location> possibleDirectionsInside(City city) {
 		this.identifyNeighboursInside(city);
 		
@@ -162,9 +154,12 @@ public class Location implements Comparable<Location>{
 	public Boolean isNotInside(City city) {
 		return !city.locations().contains(this);
 	}
-
-	public static Location at(int x, int y) {
-		return new Location(x, y);
+	
+	/*
+	 * DEFAULT METHODS
+	 */
+	public int compareTo(Location other) {
+		return Integer.valueOf(this.acummulatedSpeed).compareTo(Integer.valueOf(other.acummulatedSpeed));
 	}
 	
 	@Override
@@ -176,5 +171,5 @@ public class Location implements Comparable<Location>{
 	public String toString() {
 		return this.print();
 	}
-
+	
 }

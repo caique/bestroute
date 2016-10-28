@@ -36,7 +36,7 @@ public class City {
 		return this;
 	}
 
-	public Integer speedBetween(Location current, Location neighbour) {
+	public int speedBetween(Location current, Location neighbour) {
 		for(Street street : this.streets){
 			if(street.connects(current, neighbour)){
 				return street.maxSpeed;
@@ -45,7 +45,7 @@ public class City {
 			}
 		}
 		
-		return null;
+		return 0;
 	}
 	
 	public List<Street> connections() {

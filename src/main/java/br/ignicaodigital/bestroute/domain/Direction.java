@@ -4,14 +4,16 @@ public enum Direction {
 	NORTH,
 	SOUTH,
 	EAST,
-	WEST;
+	WEST,
+	ORIGIN,
+	UNDEFINED;
 
-	public static Direction connecting(Location location, Location origin) {
-		if(origin.goingToNorthNeighbour().is(location)) return NORTH;
-		if(origin.goingToSouthNeighbour().is(location)) return SOUTH;
-		if(origin.goingToEastNeighbour().is(location)) return EAST;
-		if(origin.goingToWestNeighbour().is(location)) return WEST;
+	public static Direction connecting(Location origin, Location location) {
+		if(origin.hasNorthNeighbourAt(location)) return NORTH;
+		if(origin.hasSouthNeighbourAt(location)) return SOUTH;
+		if(origin.hasEastNeighbourAt(location)) return EAST;
+		if(origin.hasWestNeighbourAt(location)) return WEST;
 		
-		return null;
+		return UNDEFINED;
 	}
 }

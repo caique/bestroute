@@ -36,16 +36,12 @@ public class City {
 		return this;
 	}
 
-	public int speedBetween(Location current, Location neighbour) {
-		for(Street street : this.streets){
-			if(street.connects(current, neighbour)){
-				return street.maxSpeed;
-			} else {
-				
-			}
-		}
+	public int speedBetween(Location origin, Location target) {
+		Street street = findStreetConnecting(origin, target);
 		
-		return 0;
+		if(street == null) return 0;
+		
+		return street.maxSpeed;
 	}
 	
 	public List<Street> connections() {
@@ -58,6 +54,26 @@ public class City {
 
 	public List<Interdiction> interdictions() {
 		return interdictions;
+	}
+
+	public String nameOfConnectionBetween(Location origin, Location target) {
+		Street street = findStreetConnecting(origin, target);
+		
+		if(street == null) return "";
+		
+		return street.name;
+	}
+
+	private Street findStreetConnecting(Location origin, Location target) {
+		for(Street street : this.streets){
+			if(street.connects(origin, target)){
+				return street;
+			} else {
+				
+			}
+		}
+		
+		return null;
 	}
 
 }

@@ -2,9 +2,9 @@ package br.ignicaodigital.bestroute.domain;
 
 public class Step {
 
-	final Location origin;
-	final Location target;
-	final Direction direction;
+	public final Location origin;
+	public final Location target;
+	public final Direction direction;
 	
 	public Step(Location origin, Location target) {
 		this.origin = origin;

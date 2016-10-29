@@ -10,8 +10,8 @@ public class Location implements Comparable<Location>{
 
 	final int x;
 	final int y;
-	int acummulatedSpeed;
 	Boolean wasVisited;
+	private int acummulatedSpeed;
 
 	private Location northNeighbour;
 	private Location southNeighbour;
@@ -186,6 +186,14 @@ public class Location implements Comparable<Location>{
 		} else {
 			throw new Exception("Invalid location definition! Check your entries.");
 		}
+	}
+
+	public void with(int speed) {
+		this.acummulatedSpeed = speed;
+	}
+
+	public int acummulatedSpeed() {
+		return acummulatedSpeed;
 	}
 	
 }

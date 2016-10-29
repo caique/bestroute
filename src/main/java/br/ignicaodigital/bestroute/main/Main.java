@@ -1,26 +1,25 @@
-package br.ignicaodigital.bestroute.runner;
+package br.ignicaodigital.bestroute.main;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.List;
 
+import br.ignicaodigital.bestroute.algorithm.WalkerThroughFastestPath;
+import br.ignicaodigital.bestroute.algorithm.WalkerThroughShortestPath;
+import br.ignicaodigital.bestroute.controller.TrafficManager;
 import br.ignicaodigital.bestroute.domain.City;
 import br.ignicaodigital.bestroute.domain.Location;
-import br.ignicaodigital.bestroute.domain.Step;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, "utf-8"));
+		TrafficManager trafficManager = null;
 		
 		System.out.println("Best Route ----");
 		
 		// TODO: Recover filepath from system.in and create city from file
 		City city = new City().connectedBy("Street A-(0,0);(50,0):100");
 		city.update();
-		
-		//TODO: Make it abstract with two implementations
-		TrafficManager trafficManager = new TrafficManager(city);
 
 		System.out.println("Please insert the ORIGIN location in the 'x,y' (without quotes):");
 		String originAsString = reader.readLine();
@@ -46,16 +45,25 @@ public class Main {
 		
 		if(preference == 1){
 			System.out.println("\nFastest Path from" + origin + " to " + target + ":");
-			List<Step> path = trafficManager.forFastestPathBetween(origin, target);
-			String pathAsString = trafficManager.draw(path);
-			System.out.println(pathAsString);
+			
+			trafficManager = TrafficManager
+												.to(city)
+												.thinkingAs(new WalkerThroughFastestPath(city));
+			
 		} else if(preference == 2){
 			System.out.println("\nShortest Path from" + origin + " to " + target + ":");
-			System.out.println("\n TODO");
+			
+			trafficManager = TrafficManager
+					.to(city)
+					.thinkingAs(new WalkerThroughShortestPath(city));
+			
 		} else {
 			System.out.println("Your preference is unavailable.");
 			System.exit(0);
 		}
+		
+		String path = trafficManager.describeBestPathBetween(origin, target);
+		System.out.println(path);
 	}
 	
 }

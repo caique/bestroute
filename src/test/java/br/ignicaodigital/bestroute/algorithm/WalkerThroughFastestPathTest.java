@@ -1,4 +1,4 @@
-package br.ignicaodigital.bestroute.domain;
+package br.ignicaodigital.bestroute.algorithm;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,6 +6,12 @@ import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
+
+import br.ignicaodigital.bestroute.algorithm.WalkerThroughFastestPath;
+import br.ignicaodigital.bestroute.domain.City;
+import br.ignicaodigital.bestroute.domain.Direction;
+import br.ignicaodigital.bestroute.domain.Location;
+import br.ignicaodigital.bestroute.domain.Step;
 
 public class WalkerThroughFastestPathTest {
 
@@ -17,9 +23,10 @@ public class WalkerThroughFastestPathTest {
 				.and("Av. New-(0,20);(0,0):100");
 		
 		Location origin = Location.at(0, 0);
-		WalkerThroughFastestPath walker = new WalkerThroughFastestPath(city, origin);
-		
-		List<Step> directions = walker.directionsTo(Location.at(5, 2));
+		Location target = Location.at(5, 2);
+
+		WalkerThroughFastestPath walker = new WalkerThroughFastestPath(city);
+		List<Step> directions = walker.directionsBetween(origin, target);
 		
 		assertEquals(2, directions.size());
 		assertEquals(Direction.EAST, directions.get(0).direction);
@@ -37,9 +44,8 @@ public class WalkerThroughFastestPathTest {
 		Location origin = Location.at(0, 0);
 		Location target = Location.at(50, 0);
 		
-		WalkerThroughFastestPath walker = new WalkerThroughFastestPath(city, origin);
-		
-		List<Step> directions = walker.directionsTo(target);
+		WalkerThroughFastestPath walker = new WalkerThroughFastestPath(city);
+		List<Step> directions = walker.directionsBetween(origin, target);
 		
 		assertEquals(1, directions.size());
 		assertEquals(Direction.EAST, directions.get(0).direction);
@@ -61,12 +67,8 @@ public class WalkerThroughFastestPathTest {
 		Location origin = Location.at(0, 0);
 		Location target = Location.at(50, 20);
 		
-		/*
-		 * TODO: INVERT LOGIC OF DIJKSTRA ALGORITMH
-		 */
-		WalkerThroughFastestPath walker = new WalkerThroughFastestPath(city, origin);
-		
-		List<Step> directions = walker.directionsTo(target);
+		WalkerThroughFastestPath walker = new WalkerThroughFastestPath(city);
+		List<Step> directions = walker.directionsBetween(origin, target);
 		
 		assertEquals(4, directions.size());
 		assertEquals(Direction.EAST, directions.get(0).direction);

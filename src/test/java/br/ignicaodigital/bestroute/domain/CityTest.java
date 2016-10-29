@@ -34,9 +34,9 @@ public class CityTest {
 	}
 	
 	@Test
-	public void speedShouldBe110BetweenLocationsWithoutAStreet() throws Exception{
+	public void speedShouldBe0BetweenLocationsWithoutAStreet() throws Exception{
 		City city = new City().connectedBy("Street A-(0,0);(0,2):100").and("Street B-(0,0);(2,0):10");
-		assertEquals(110, city.speedBetween(Location.at(0, 2), Location.at(2, 0)));
+		assertEquals(0, city.speedBetween(Location.at(0, 2), Location.at(2, 0)));
 	}
 	
 }

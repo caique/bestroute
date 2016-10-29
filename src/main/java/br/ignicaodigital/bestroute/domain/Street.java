@@ -12,8 +12,8 @@ public class Street {
 	int maxSpeed;
 	
 	public Street(String definition) throws Exception {
-		// (.+)-\(([0-9]+),([0-9]+)\);\(([0-9]+),([0-9]+)\):([0-9]+)
-		String pattern = "(.+)-\\(([0-9]+),([0-9]+)\\);\\(([0-9]+),([0-9]+)\\):([0-9]+)";
+		// (.+)\s*-\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)\s*;\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)\s*:\s*(\d+)
+		String pattern = "(.+)\\s*-\\s*\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*\\)\\s*;\\s*\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*\\)\\s*:\\s*(\\d+)";
 		Matcher matcher = Pattern.compile(pattern).matcher(definition);
 		
 		if(matcher.find()) {

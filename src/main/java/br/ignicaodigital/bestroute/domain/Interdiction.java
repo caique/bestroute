@@ -10,11 +10,11 @@ public class Interdiction extends Location {
 	}
 	
 	public static Interdiction from(String definition) throws Exception {
-		String pattern = "(I)-(\\(([0-9]+),([0-9]+)\\))";
+		String pattern = "I-\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*\\)";
 		Matcher matcher = Pattern.compile(pattern).matcher(definition);
 		
 		if(matcher.find()) {
-			return new Interdiction(Integer.parseInt(matcher.group(3)), Integer.parseInt(matcher.group(4)));
+			return new Interdiction(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
 		} else {
 			throw new Exception("Invalid interdiction definition! Check your entries.");
 		}

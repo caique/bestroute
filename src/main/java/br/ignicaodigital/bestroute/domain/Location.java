@@ -2,6 +2,8 @@ package br.ignicaodigital.bestroute.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Location implements Comparable<Location>{
@@ -170,6 +172,20 @@ public class Location implements Comparable<Location>{
 	@Override
 	public String toString() {
 		return this.print();
+	}
+
+	public static Location from(String definition) throws Exception {
+		// \s*(\d+)\s*,\s*(\d+)\s*
+		String pattern = "\\s*(\\d+)\\s*,\\s*(\\d+)\\s*";
+		Matcher matcher = Pattern.compile(pattern).matcher(definition);
+		
+		if(matcher.find()){
+			int x = Integer.parseInt(matcher.group(1));
+			int y = Integer.parseInt(matcher.group(2));
+			return Location.at(x, y);
+		} else {
+			throw new Exception("Invalid location definition! Check your entries.");
+		}
 	}
 	
 }

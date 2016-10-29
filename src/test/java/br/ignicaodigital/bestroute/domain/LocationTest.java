@@ -53,4 +53,17 @@ public class LocationTest {
 		
 	}
 	
+	@Test
+	public void shouldReturnANewLocationFromAValidString() throws Exception{
+		Location.from("0,0");
+		Location.from("0, 0");
+		Location.from("(0,0)");
+		Location.from("(0, 0)");
+	}
+	
+	@Test(expected = Exception.class)
+	public void shouldRaiseExceptionFromAInvalidString() throws Exception{
+		Location.from("0.0");
+	}
+	
 }

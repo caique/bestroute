@@ -3,7 +3,9 @@ package br.ignicaodigital.bestroute.runner;
 import java.util.List;
 
 import br.ignicaodigital.bestroute.domain.City;
+import br.ignicaodigital.bestroute.domain.Location;
 import br.ignicaodigital.bestroute.domain.Step;
+import br.ignicaodigital.bestroute.domain.WalkerThroughFastestPath;
 
 public class TrafficManager {
 	
@@ -26,6 +28,11 @@ public class TrafficManager {
 		}
 		
 		return pathAsString.toString();
+	}
+
+	public List<Step> forFastestPathBetween(Location origin, Location target) throws Exception {
+		WalkerThroughFastestPath walker = new WalkerThroughFastestPath(city, origin);
+		return walker.directionsTo(target);
 	}
 	
 	

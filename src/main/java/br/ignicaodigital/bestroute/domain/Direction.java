@@ -15,6 +15,7 @@ public enum Direction {
 	}
 	
 	public static Direction connecting(Location origin, Location location) {
+		if(origin.is(location)) return ORIGIN;
 		if(origin.hasNorthNeighbourAt(location)) return NORTH;
 		if(origin.hasSouthNeighbourAt(location)) return SOUTH;
 		if(origin.hasEastNeighbourAt(location)) return EAST;

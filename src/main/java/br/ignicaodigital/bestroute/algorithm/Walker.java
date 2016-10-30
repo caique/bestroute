@@ -42,5 +42,19 @@ public abstract class Walker {
 		Collections.reverse(steps);
 		return steps;
 	}
+
+	public Location nextNeighbourIn(List<Location> locationsToBeVisited) {
+		Collections.sort(locationsToBeVisited);
+
+		Location current = locationsToBeVisited.get(0);
+		
+		for(Location location : locationsToBeVisited){
+			if(location.acummulatedSpeed() < current.acummulatedSpeed()){
+				current = location;
+			}
+		}
+		
+		return current;
+	}
 	
 }

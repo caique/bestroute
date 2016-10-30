@@ -1,8 +1,7 @@
 package br.ignicaodigital.bestroute.algorithm;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.NavigableSet;
-import java.util.TreeSet;
 
 import br.ignicaodigital.bestroute.domain.City;
 import br.ignicaodigital.bestroute.domain.Location;
@@ -20,6 +19,7 @@ public class WalkerThroughFastestPath extends Walker{
 	@Override
 	public List<Step> directionsBetween(Location origin, Location target) throws Exception {
 		Location lastMatch = null;
+		city.update();
 		origin.identifyNeighboursInside(city);
 		
 		if(origin.isNeighbourOf(target)){
@@ -27,7 +27,7 @@ public class WalkerThroughFastestPath extends Walker{
 			target.comesThrough(origin);
 			lastMatch = target;
 		} else {
-			NavigableSet<Location> locationsToBeVisited = new TreeSet<Location>();
+			List<Location> locationsToBeVisited = new ArrayList<Location>();
 			
 			for (Location location : city.locations()) {
 				if(location.isNot(origin)){
@@ -42,7 +42,8 @@ public class WalkerThroughFastestPath extends Walker{
 			}
 			
 			while(!locationsToBeVisited.isEmpty()){
-				Location current = locationsToBeVisited.pollFirst();
+				Location current = nextNeighbourIn(locationsToBeVisited);
+				locationsToBeVisited.remove(current);
 				
 				for(Location direction : current.possibleDirectionsInside(city)){
 					int speedToNeighbour = 

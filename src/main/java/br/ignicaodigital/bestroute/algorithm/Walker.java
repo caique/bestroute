@@ -45,9 +45,7 @@ public abstract class Walker {
 
 	protected Location nextNeighbourIn(List<Location> locationsToBeVisited) {
 		Collections.sort(locationsToBeVisited);
-		Location current = locationsToBeVisited.get(0);
-		
-		return current;
+		return locationsToBeVisited.get(0);
 	}
 	
 }

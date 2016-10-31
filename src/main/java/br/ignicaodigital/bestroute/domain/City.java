@@ -101,7 +101,7 @@ public class City {
 	public static City from(String filepath) throws Exception{
 		City city = new City();
 		
-		Files.lines(Paths.get("streets.txt")).forEach((line)->{
+		Files.lines(Paths.get(filepath)).forEach((line)->{
 			String pattern = "I-\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*\\)";
 			Matcher matcher = Pattern.compile(pattern).matcher(line);
 			

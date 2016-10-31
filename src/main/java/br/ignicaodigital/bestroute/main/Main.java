@@ -17,7 +17,6 @@ public class Main {
 		
 		System.out.println("Best Route ----");
 		
-		// TODO: Recover filepath from system.in and create city from file
 		System.out.println("Please provide the filepath to the city configurations:");
 		String cityConfigurations = reader.readLine();
 		City city = City.from(cityConfigurations);

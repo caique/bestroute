@@ -1,7 +1,11 @@
 package br.ignicaodigital.bestroute.domain;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class City {
 	
@@ -76,4 +80,31 @@ public class City {
 		return null;
 	}
 
+	public static City from(String filepath) throws Exception{
+		City city = new City();
+		
+		Files.lines(Paths.get("streets.txt")).forEach((line)->{
+			String pattern = "I-\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*\\)";
+			Matcher matcher = Pattern.compile(pattern).matcher(line);
+			
+			if(matcher.find()) {
+				try {
+					city.interditedAt(line);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				try {
+					city.connectedBy(line);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		city.update();
+
+		return city;
+	}
+	
 }

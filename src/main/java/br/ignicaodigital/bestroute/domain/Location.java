@@ -161,7 +161,11 @@ public class Location implements Comparable<Location>{
 	 * DEFAULT METHODS
 	 */
 	public int compareTo(Location other) {
-		return Integer.valueOf(this.acummulatedSpeed).compareTo(Integer.valueOf(other.acummulatedSpeed));
+		if(this.acummulatedSpeed == Integer.MAX_VALUE) return 1;
+		if(other.acummulatedSpeed == Integer.MAX_VALUE) return -1;
+		if((this.acummulatedSpeed == Integer.MAX_VALUE) && (other.acummulatedSpeed == Integer.MAX_VALUE)) return 0;
+		
+		return Integer.valueOf(other.acummulatedSpeed).compareTo(Integer.valueOf(this.acummulatedSpeed));
 	}
 	
 	@Override

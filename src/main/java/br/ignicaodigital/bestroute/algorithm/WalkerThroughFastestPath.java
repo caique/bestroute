@@ -45,6 +45,8 @@ public class WalkerThroughFastestPath extends Walker{
 				Location current = nextNeighbourIn(locationsToBeVisited);
 				locationsToBeVisited.remove(current);
 				
+				if (current.is(target)) break;
+				
 				for(Location direction : current.possibleDirectionsInside(city)){
 					int speedToNeighbour = 
 							current.acummulatedSpeed()

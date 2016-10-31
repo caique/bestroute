@@ -54,19 +54,19 @@ public class WalkerThroughShortestPathTest {
 	@Test
 	public void shouldWalkThroughEastNorthIgnoringTheSpeed() throws Exception{
 		City city = new City()
-				.connectedBy("Av. Axis-(0,0);(50,0):100")
-				.and("Av. Fast Awesome-(0,0);(0,10):10")
-				.and("Av. Slow Awesome Two-(0,10);(0,20):100")
-				.and("Av. Slow Awesome Two-(0,20);(10,20):100")
-				.and("Av. fast Love-(0,10);(10,10):10")
-				.and("Av. fast Up-(10,10);(10,20):10")
-				.and("Av. Fast Axis-(10,20);(50,20):400")
-				.and("Av. Down-(50,20);(50,0):100");
+				.connectedBy("Av. Axis-(0,0);(50,0):10")
+				.and("Av. Fast Awesome-(0,0);(0,10):100")
+				.and("Av. Slow Awesome Two-(0,10);(0,20):10")
+				.and("Av. Slow Awesome Two-(0,20);(10,20):10")
+				.and("Av. fast Love-(0,10);(10,10):100")
+				.and("Av. fast Up-(10,10);(10,20):100")
+				.and("Av. Fast Axis-(10,20);(50,20):100")
+				.and("Av. Down-(50,20);(50,0):10");
 
 		Location origin = Location.at(0, 0);
 		Location target = Location.at(50, 20);
 		
-		WalkerThroughFastestPath walker = new WalkerThroughFastestPath(city);
+		WalkerThroughShortestPath walker = new WalkerThroughShortestPath(city);
 		List<Step> directions = walker.directionsBetween(origin, target);
 		
 		assertEquals(2, directions.size());

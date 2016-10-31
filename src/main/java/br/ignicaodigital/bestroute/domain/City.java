@@ -20,6 +20,8 @@ public class City {
 	}
 
 	public void update(){
+		excludeInterditedStreets();
+		
 		for(Street street : streets){
 			if(!this.locations.contains(street.start)) this.locations.add(street.start);
 			if(!this.locations.contains(street.end)) this.locations.add(street.end);

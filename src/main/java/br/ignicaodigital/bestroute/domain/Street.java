@@ -41,5 +41,9 @@ public class Street {
 		return (this.start.is(source) && this.end.is(target)) 
 				|| (this.start.is(target) && this.end.is(source));
 	}
+
+	public Boolean passThrough(Location location) {
+		return this.start.is(location) || this.end.is(location);
+	}
 	
 }

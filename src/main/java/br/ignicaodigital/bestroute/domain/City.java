@@ -28,6 +28,7 @@ public class City {
 	
 	public City connectedBy(String definition) throws Exception {
 		this.streets.add(new Street(definition));
+		excludeInterditedStreets();
 		return this;
 	}
 
@@ -37,7 +38,22 @@ public class City {
 	
 	public City interditedAt(String definition) throws Exception {
 		this.interdictions.add(Interdiction.from(definition));
+		excludeInterditedStreets();
 		return this;
+	}
+
+	private void excludeInterditedStreets() {
+		List<Street> streetsWithInterdictions = new ArrayList<Street>();
+		
+		for(Street street : streets){
+			for(Interdiction interdiction : interdictions){
+				if(street.passThrough(interdiction)){
+					streetsWithInterdictions.add(street);
+				}
+			}
+		}
+		
+		streets.removeAll(streetsWithInterdictions);
 	}
 
 	public int speedBetween(Location origin, Location target) {

@@ -38,6 +38,44 @@ public class Location implements Comparable<Location>{
 		return new Location(x, y);
 	}
 	
+	public static Location from(String definition) throws Exception {
+		// \s*(\d+)\s*,\s*(\d+)\s*
+		String pattern = "\\s*(\\d+)\\s*,\\s*(\\d+)\\s*";
+		Matcher matcher = Pattern.compile(pattern).matcher(definition);
+		
+		if(matcher.find()){
+			int x = Integer.parseInt(matcher.group(1));
+			int y = Integer.parseInt(matcher.group(2));
+			return Location.at(x, y);
+		} else {
+			throw new Exception("Invalid location definition! Check your entries.");
+		}
+	}
+	
+	public static Double calculateTimeBetween(Location start, Location end, int speed) {
+		Double cartesianDistance = 0.0;
+		
+		if(start.intersectsInXWith(end)){
+			cartesianDistance = (double) Math.abs(start.y - end.y);
+		}
+		
+		if(start.intersectsInYWith(end)){
+			cartesianDistance = (double) Math.abs(start.x - end.x);
+		}
+		
+		return new BigDecimal(cartesianDistance / (double) speed)
+				.setScale(2, RoundingMode.HALF_UP)
+				.doubleValue();
+	}
+	
+	private Boolean intersectsInXWith(Location location) {
+		return this.x == location.x;
+	}
+	
+	private Boolean intersectsInYWith(Location location) {
+		return this.y == location.y;
+	}
+	
 	public void identifyNeighbours() {
 		this.northNeighbour = new Location(x, (y+1));
 		
@@ -85,27 +123,15 @@ public class Location implements Comparable<Location>{
 			&& (city.routeBetween(this, location) != null);
 	}
 	
-	private Boolean intersectsInXWith(Location location) {
-		return this.x == location.x;
-	}
-	
-	private Boolean intersectsInYWith(Location location) {
-		return this.y == location.y;
-	}
-
-	public String print(){
-		return new StringBuilder("(")
-		.append(this.x)
-		.append(",")
-		.append(this.y)
-		.append(")").toString();
-	}
-	
 	public Boolean isNeighbourOf(Location location){
 		return this.hasNorthNeighbourAt(location)
 				|| this.hasSouthNeighbourAt(location)
 				|| this.hasEastNeighbourAt(location)
 				|| this.hasWestNeighbourAt(location);
+	}
+	
+	public Boolean has(Location neighbour) {
+		return neighbour != null;
 	}
 	
 	public Boolean hasNorthNeighbourAt(Location location){
@@ -124,10 +150,6 @@ public class Location implements Comparable<Location>{
 		return this.has(westNeighbour) && this.westNeighbour.is(location);
 	}
 	
-	public Boolean has(Location neighbour) {
-		return neighbour != null;
-	}
-	
 	public Boolean is(Location target) {
 		if(target == null) return Boolean.FALSE;
 		return (this.x == target.x) && (this.y == target.y);
@@ -137,12 +159,28 @@ public class Location implements Comparable<Location>{
 		return (this.x != target.x) || (this.y != target.y);
 	}
 
+	public String print(){
+		return new StringBuilder("(")
+		.append(this.x)
+		.append(",")
+		.append(this.y)
+		.append(")").toString();
+	}
+	
 	public void comesThrough(Location previous) {
 		this.previous = previous;
 	}
 	
 	public Location comesThrough() {
 		return previous;
+	}
+	
+	public void canBeReachedIn(Double time) {
+		this.accumulatedTimeToReach = time;
+	}
+
+	public Double timeToReach() {
+		return accumulatedTimeToReach;
 	}
 	
 	public List<Location> possibleDirectionsInside(City city) {
@@ -163,7 +201,7 @@ public class Location implements Comparable<Location>{
 	}
 	
 	/*
-	 * DEFAULT METHODS
+	 * OVERRIDE METHODS
 	 */
 	public int compareTo(Location other) {
 		return this.accumulatedTimeToReach.compareTo(other.accumulatedTimeToReach);
@@ -177,49 +215,6 @@ public class Location implements Comparable<Location>{
 	@Override
 	public String toString() {
 		return this.print();
-	}
-
-	public static Location from(String definition) throws Exception {
-		// \s*(\d+)\s*,\s*(\d+)\s*
-		String pattern = "\\s*(\\d+)\\s*,\\s*(\\d+)\\s*";
-		Matcher matcher = Pattern.compile(pattern).matcher(definition);
-		
-		if(matcher.find()){
-			int x = Integer.parseInt(matcher.group(1));
-			int y = Integer.parseInt(matcher.group(2));
-			return Location.at(x, y);
-		} else {
-			throw new Exception("Invalid location definition! Check your entries.");
-		}
-	}
-
-	public void canBeReachedIn(Double time) {
-		this.accumulatedTimeToReach = time;
-	}
-
-	public Double timeToReach() {
-		return accumulatedTimeToReach;
-	}
-
-	public static Double calculateTimeBetween(Location start, Location end, int speed) {
-		Double cartesianDistance = 0.0;
-		
-		if(start.intersectsInXWith(end)){
-			cartesianDistance = (double) Math.abs(start.y - end.y);
-		}
-		
-		if(start.intersectsInYWith(end)){
-			cartesianDistance = (double) Math.abs(start.x - end.x);
-		}
-		
-		return new BigDecimal(cartesianDistance / (double) speed)
-				.setScale(2, RoundingMode.HALF_UP)
-				.doubleValue();
-	}
-
-	public static void generateMultipleFrom(String stopsAsString) {
-		
-		
 	}
 	
 }

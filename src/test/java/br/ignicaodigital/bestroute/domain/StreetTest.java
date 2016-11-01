@@ -32,7 +32,7 @@ public class StreetTest {
 		assertEquals("Av. Axis", streetFromString.name);
 		assertEquals("(0,0)", streetFromString.start.print());
 		assertEquals("(50,0)", streetFromString.end.print());
-		assertEquals(110, streetFromString.maxSpeed);
+		assertEquals(0.45, streetFromString.timeToCross, 0);
 	}
 
 }

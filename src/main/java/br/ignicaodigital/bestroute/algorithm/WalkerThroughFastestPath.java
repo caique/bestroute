@@ -18,48 +18,41 @@ public class WalkerThroughFastestPath extends Walker{
 	
 	@Override
 	public List<Step> directionsBetween(Location origin, Location target) throws Exception {
-		Location lastMatch = null;
 		city.update();
-		origin.identifyNeighboursInside(city);
 		
-		if(origin.isNeighbourOf(target)){
-			target.with(city.speedBetween(origin, target));
-			target.comesThrough(origin);
-			lastMatch = target;
-		} else {
-			List<Location> locationsToBeVisited = new ArrayList<Location>();
-			
-			for (Location location : city.locations()) {
-				if(location.isNot(origin)){
-					location.with(INVALID_SPEED);
-					location.comesThrough(null);
-				} else {
-					location.with(0);
-					location.comesThrough(origin);
-				}
-				
-				locationsToBeVisited.add(location);
+		Location lastMatch = null;
+		List<Location> locationsToBeVisited = new ArrayList<Location>();
+		
+		for (Location location : city.locations()) {
+			if(location.isNot(origin)){
+				location.canBeReachedIn(INVALID_TIME);
+				location.comesThrough(null);
+			} else {
+				location.canBeReachedIn(0.0);
+				location.comesThrough(origin);
 			}
 			
-			while(!locationsToBeVisited.isEmpty()){
-				Location current = nextNeighbourIn(locationsToBeVisited);
-				locationsToBeVisited.remove(current);
+			locationsToBeVisited.add(location);
+		}
+		
+		while(!locationsToBeVisited.isEmpty()){
+			Location current = nextNeighbourIn(locationsToBeVisited);
+			locationsToBeVisited.remove(current);
+			
+			if(current.is(target)) break;
+			
+			for(Location direction : current.possibleDirectionsInside(city)){
+				Double timeToReachNeighbour = 
+						current.timeToReach()
+						+ this.city.timeBetween(current, direction);
 				
-				if (current.is(target)) break;
-				
-				for(Location direction : current.possibleDirectionsInside(city)){
-					int speedToNeighbour = 
-							current.acummulatedSpeed()
-							+ this.city.speedBetween(current, direction);
-					
-					if(speedToNeighbour < direction.acummulatedSpeed()){
-						direction.with(speedToNeighbour);
-						direction.comesThrough(current);
-						lastMatch = direction;
-					}
+				if(timeToReachNeighbour < direction.timeToReach()){
+					direction.canBeReachedIn(timeToReachNeighbour);
+					direction.comesThrough(current);
+					lastMatch = direction;
 				}
-				
 			}
+			
 		}
 		
 		return stepsBetween(origin, lastMatch);

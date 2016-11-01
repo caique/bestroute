@@ -20,15 +20,15 @@ public class CityTest {
 	}
 	
 	@Test
-	public void speedShouldBe100BetweenStartAndEndLocationsOfAStreetWithMaxSpeedEqualsTo199() throws Exception{
+	public void timeToReachShouldBe0dot02BetweenStartAndEndLocationsOfAStreetWithMaxSpeedEqualsTo199() throws Exception{
 		City city = new City().connectedBy("Street A-(0,0);(0,2):100");
-		assertEquals(100, city.speedBetween(Location.at(0, 0), Location.at(0, 2)));
+		assertEquals(0.02, city.timeBetween(Location.at(0, 0), Location.at(0, 2)), 0);
 	}
 	
 	@Test
-	public void speedShouldBe0BetweenLocationsWithoutAStreet() throws Exception{
+	public void timeToReachShouldBe0dot22BetweenLocationsWithoutAStreet() throws Exception{
 		City city = new City().connectedBy("Street A-(0,0);(0,2):100").and("Street B-(0,0);(2,0):10");
-		assertEquals(0, city.speedBetween(Location.at(0, 2), Location.at(2, 0)));
+		assertEquals(0.22, city.timeBetween(Location.at(0, 2), Location.at(2, 0)), 0);
 	}
 	
 	@Ignore

@@ -9,7 +9,7 @@ public class Street {
 	String name;
 	Location start;
 	Location end;
-	int maxSpeed;
+	Double timeToCross;
 	
 	public Street(String definition) throws Exception {
 		// (.+)\s*-\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)\s*;\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)\s*:\s*(\d+)
@@ -20,7 +20,9 @@ public class Street {
 			this.name = matcher.group(1);
 			this.start = new Location(Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(3)));
 			this.end = new Location(Integer.parseInt(matcher.group(4)), Integer.parseInt(matcher.group(5)));
-			this.maxSpeed = new Integer(matcher.group(6));
+			
+			int maxSpeed = new Integer(matcher.group(6));
+			this.timeToCross = Location.calculateTimeBetween(start, end, maxSpeed);
 		} else {
 			throw new Exception("Invalid street definition! Check your entries.");
 		}
@@ -34,7 +36,7 @@ public class Street {
 			.append(";")
 			.append(end.print())
 			.append(":")
-			.append(maxSpeed).toString();
+			.append(timeToCross).toString();
 	}
 
 	public Boolean connects(Location source, Location target) {

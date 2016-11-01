@@ -17,13 +17,15 @@ public class WalkerThroughShortestPathTest {
 	
 	@Test
 	public void shouldWalkThroughEastNorth() throws Exception{
-		City city = new City().connectedBy("Av. Axis-(0,0);(50,0):10")
-				.and("Av. Love-(50,0);(50,20):10")
-				.and("Av. Awesome-(50,20);(0,20):100")
-				.and("Av. New-(0,20);(0,0):100");
+		City city = new City().connectedBy("Street A-(0,0);(4,0):1")
+				.and("Street B-(4,0);(4,3):1")
+				.and("Street C-(4,3);(2,3):100")
+				.and("Street D-(2,3);(2,2):100")
+				.and("Street C-(2,2);(0,2):100")
+				.and("Street D-(0,2);(0,0):100");
 		
 		Location origin = Location.at(0, 0);
-		Location target = Location.at(5, 2);
+		Location target = Location.at(4, 3);
 
 		Walker walker = new WalkerThroughShortestPath(city);
 		List<Step> directions = walker.directionsBetween(origin, target);
@@ -35,14 +37,15 @@ public class WalkerThroughShortestPathTest {
 	
 	@Test
 	public void shouldWalkOnlyOneEast() throws Exception{
-		City city = new City()
-				.connectedBy("Av. Axis-(0,0);(50,0):10")
-				.and("Av. Awesome-(0,0);(0,20):50")
-				.and("Av. Love-(0,20);(50,20):40")
-				.and("Av. Down-(50,20);(50,0):100");
-
+		City city = new City().connectedBy("Street A-(0,0);(4,0):1")
+				.and("Street B-(4,0);(4,3):1")
+				.and("Street C-(4,3);(2,3):100")
+				.and("Street D-(2,3);(2,2):100")
+				.and("Street C-(2,2);(0,2):100")
+				.and("Street D-(0,2);(0,0):100");
+		
 		Location origin = Location.at(0, 0);
-		Location target = Location.at(50, 0);
+		Location target = Location.at(4, 0);
 		
 		Walker walker = new WalkerThroughShortestPath(city);
 		List<Step> directions = walker.directionsBetween(origin, target);

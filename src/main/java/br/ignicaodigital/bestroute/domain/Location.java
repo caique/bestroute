@@ -10,8 +10,7 @@ public class Location implements Comparable<Location>{
 
 	final int x;
 	final int y;
-	Boolean wasVisited;
-	private int acummulatedSpeed;
+	private Double accumulatedTimeToReach;
 
 	private Location northNeighbour;
 	private Location southNeighbour;
@@ -161,11 +160,7 @@ public class Location implements Comparable<Location>{
 	 * DEFAULT METHODS
 	 */
 	public int compareTo(Location other) {
-		if(this.acummulatedSpeed == Integer.MAX_VALUE) return 1;
-		if(other.acummulatedSpeed == Integer.MAX_VALUE) return -1;
-		if((this.acummulatedSpeed == Integer.MAX_VALUE) && (other.acummulatedSpeed == Integer.MAX_VALUE)) return 0;
-		
-		return Integer.valueOf(other.acummulatedSpeed).compareTo(Integer.valueOf(this.acummulatedSpeed));
+		return this.accumulatedTimeToReach.compareTo(other.accumulatedTimeToReach);
 	}
 	
 	@Override
@@ -192,12 +187,24 @@ public class Location implements Comparable<Location>{
 		}
 	}
 
-	public void with(int speed) {
-		this.acummulatedSpeed = speed;
+	public void canBeReachedIn(Double time) {
+		this.accumulatedTimeToReach = time;
 	}
 
-	public int acummulatedSpeed() {
-		return acummulatedSpeed;
+	public Double timeToReach() {
+		return accumulatedTimeToReach;
+	}
+
+	public static Double calculateTimeBetween(Location start, Location end, int speed) {
+		if(start.intersectsInXWith(end)){
+			return new Double(Math.abs(start.y - end.y) / speed);
+		}
+		
+		if(start.intersectsInYWith(end)){
+			return new Double(Math.abs(start.x - end.x) / speed);
+		}
+		
+		return 0.0;
 	}
 	
 }

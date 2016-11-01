@@ -47,8 +47,8 @@ public class Main {
 			System.out.println("\nFastest Path from" + origin + " to " + target + ":");
 			
 			trafficManager = TrafficManager
-												.to(city)
-												.thinkingAs(new WalkerThroughFastestPath(city));
+					.to(city)
+					.thinkingAs(new WalkerThroughFastestPath(city));
 			
 		} else if(preference == 2){
 			System.out.println("\nShortest Path from" + origin + " to " + target + ":");
@@ -58,7 +58,7 @@ public class Main {
 					.thinkingAs(new WalkerThroughShortestPath(city));
 			
 		} else {
-			System.out.println("Your preference is unavailable.");
+			System.out.println("Your preference is unavailable, please try another option.");
 			System.exit(0);
 		}
 		

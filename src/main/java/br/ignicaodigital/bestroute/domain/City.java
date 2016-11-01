@@ -44,6 +44,13 @@ public class City {
 		return this;
 	}
 
+	public void equalizeSpeedOfAllStreets() {
+		for(Street street : streets){
+			street.timeToCross = 1.0;
+//			street.timeToCross = Location.calculateTimeBetween(street.start, street.end, 1);
+		}
+	}
+	
 	private void excludeInterditedStreets() {
 		List<Street> streetsWithInterdictions = new ArrayList<Street>();
 		
@@ -58,26 +65,14 @@ public class City {
 		streets.removeAll(streetsWithInterdictions);
 	}
 
-	public int speedBetween(Location origin, Location target) {
+	public Double timeBetween(Location origin, Location target) {
 		Street street = findStreetConnecting(origin, target);
 		
-		if(street == null) return 0;
+		if(street == null) return 0.0;
 		
-		return street.maxSpeed;
+		return street.timeToCross;
 	}
 	
-	public List<Street> connections() {
-		return streets;
-	}
-
-	public List<Location> locations() {
-		return locations;
-	}
-
-	public List<Interdiction> interdictions() {
-		return interdictions;
-	}
-
 	public String nameOfConnectionBetween(Location origin, Location target) {
 		Street street = findStreetConnecting(origin, target);
 		
@@ -123,6 +118,18 @@ public class City {
 		city.update();
 
 		return city;
+	}
+	
+	public List<Street> connections() {
+		return streets;
+	}
+
+	public List<Location> locations() {
+		return locations;
+	}
+
+	public List<Interdiction> interdictions() {
+		return interdictions;
 	}
 	
 }

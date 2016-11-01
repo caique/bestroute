@@ -10,7 +10,7 @@ import br.ignicaodigital.bestroute.domain.Step;
 
 public abstract class Walker {
 
-	protected static final int INVALID_SPEED = Integer.MAX_VALUE;
+	protected static final Double INVALID_TIME = Double.MAX_VALUE;
 	
 	protected City city;
 	

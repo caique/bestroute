@@ -46,5 +46,21 @@ public class TrafficManager {
 		
 		return pathAsString.toString();
 	}
+	
+	public String describeBestPathBetween(Location origin, Location target, List<Location> stops) throws Exception{
+		if(stops.isEmpty()) return describeBestPathBetween(origin, target);
+		
+		StringBuilder completePath = new StringBuilder();
+		
+		completePath.append(describeBestPathBetween(origin, stops.get(0))).append(" ");
+		
+		for(int stopId = 0; stopId < stops.size()-1; stopId++){
+			completePath.append(describeBestPathBetween(stops.get(stopId), stops.get(stopId+1))).append(" ");
+		}
+		
+		completePath.append(describeBestPathBetween(stops.get(stops.size()-1), target));
+		
+		return completePath.toString();
+	}
 
 }

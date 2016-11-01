@@ -216,5 +216,10 @@ public class Location implements Comparable<Location>{
 				.setScale(2, RoundingMode.HALF_UP)
 				.doubleValue();
 	}
+
+	public static void generateMultipleFrom(String stopsAsString) {
+		
+		
+	}
 	
 }

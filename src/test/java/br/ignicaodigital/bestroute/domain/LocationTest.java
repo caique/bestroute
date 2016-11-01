@@ -6,6 +6,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.Test;
 
@@ -72,6 +74,15 @@ public class LocationTest {
 		Location origin = Location.at(0, 0);
 		Location target = Location.at(1, 0);;
 		assertEquals(1.0, Location.calculateTimeBetween(origin, target, 1), 0);
+	}
+	
+	@Test
+	public void vazio(){
+		Matcher matcher = Pattern.compile("(\\d+,\\d+)").matcher("0,0:0,1");
+		if(matcher.find()){
+			System.out.println(matcher.group(1));
+			System.out.println(matcher.group(2));
+		}
 	}
 	
 }

@@ -2,6 +2,8 @@ package br.ignicaodigital.bestroute.main;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.ignicaodigital.bestroute.algorithm.WalkerThroughFastestPath;
 import br.ignicaodigital.bestroute.algorithm.WalkerThroughShortestPath;
@@ -21,7 +23,7 @@ public class Main {
 		String cityConfigurations = reader.readLine();
 		City city = City.from(cityConfigurations);
 
-		System.out.println("Please insert the ORIGIN location in the 'x,y' (without quotes):");
+		System.out.println("Please insert the ORIGIN location in the 'x,y' format (without quotes):");
 		String originAsString = reader.readLine();
 		Location origin = Location.from(originAsString);
 		if(origin.isNotInside(city)){
@@ -29,12 +31,33 @@ public class Main {
 			System.exit(0);
 		}
 		
-		System.out.println("Please insert the TARGET location in the 'x,y' (without quotes):");
+		System.out.println("Please insert the TARGET location in the 'x,y' format (without quotes):");
 		String targetAsString = reader.readLine();
 		Location target = Location.from(targetAsString);
 		if(target.isNotInside(city)){
 			System.out.println("\n Error: TARGET do not exists in this city. Check your entries.");
 			System.exit(0);
+		}
+		
+		String option = "y";
+		List<Location> stops = new ArrayList<Location>();
+		
+		while(!option.toLowerCase().equals("n")){
+			System.out.println("Do you want to add a stop? (y/n):");
+			option = reader.readLine();
+			
+			if(option.toLowerCase().equals("y")){
+				System.out.println("Please insert the STOP location in the 'x,y' format (without quotes):");
+				String stopAsString = reader.readLine();
+				Location stop = Location.from(stopAsString);
+		
+				if(stop.isNotInside(city)){
+					System.out.println("\n Error: STOP do not exists in this city. Check your entries.");
+					System.exit(0);
+				}
+				
+				stops.add(stop);
+			}
 		}
 		
 		System.out.println("\nChoose your preference:");
@@ -62,7 +85,7 @@ public class Main {
 			System.exit(0);
 		}
 		
-		String path = trafficManager.describeBestPathBetween(origin, target);
+		String path = trafficManager.describeBestPathBetween(origin, target, stops);
 		System.out.println(path);
 	}
 	

@@ -17,7 +17,9 @@ public class Main {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, "utf-8"));
 		TrafficManager trafficManager = null;
 		
-		System.out.println("Best Route ----");
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+		System.out.println("##### Best Route App by Caique Peixoto for Ignicao Digital #####");
 		
 		System.out.println("Please provide the filepath to the city configurations:");
 		String cityConfigurations = reader.readLine();

@@ -55,6 +55,10 @@ public class WalkerThroughFastestPath extends Walker{
 			
 		}
 		
+		if(lastMatch.isNot(target)){
+			throw new Exception("Impossible to calculate route. The locations are not connected.");
+		}
+		
 		return stepsBetween(origin, lastMatch);
 	}
 

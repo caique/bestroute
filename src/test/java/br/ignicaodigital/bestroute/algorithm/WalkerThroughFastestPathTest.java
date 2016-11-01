@@ -89,4 +89,16 @@ public class WalkerThroughFastestPathTest {
 		assertEquals(Direction.EAST, directions.get(3).direction);
 	}
 	
+	@Test(expected = Exception.class)
+	public void shouldThroughExceptionWhenPointAreDisconnected() throws Exception{
+		City city = new City().connectedBy("Street A-(0,0);(4,0):100")
+				.and("Street C-(4,4);(0,4):10");
+
+		Location origin = Location.at(0, 0);
+		Location target = Location.at(4, 4);
+		
+		WalkerThroughFastestPath walker = new WalkerThroughFastestPath(city);
+		walker.directionsBetween(origin, target);
+	}
+	
 }

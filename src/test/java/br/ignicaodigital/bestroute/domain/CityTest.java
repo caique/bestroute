@@ -26,9 +26,9 @@ public class CityTest {
 	}
 	
 	@Test
-	public void timeToReachShouldBe0dot22BetweenLocationsWithoutAStreet() throws Exception{
+	public void timeToReachShouldBe0BetweenLocationsWithoutAStreet() throws Exception{
 		City city = new City().connectedBy("Street A-(0,0);(0,2):100").and("Street B-(0,0);(2,0):10");
-		assertEquals(0.22, city.timeBetween(Location.at(0, 2), Location.at(2, 0)), 0);
+		assertEquals(0.0, city.timeBetween(Location.at(0, 2), Location.at(2, 0)), 0);
 	}
 	
 	@Ignore

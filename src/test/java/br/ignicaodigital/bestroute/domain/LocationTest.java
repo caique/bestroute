@@ -1,6 +1,7 @@
 package br.ignicaodigital.bestroute.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -39,18 +40,18 @@ public class LocationTest {
 	}
 	
 	@Test
-	public void zeroZeroShouldBeEastNeighbourOfFifthZeroWhenThereIsOnlyThemInTheMap(){
+	public void zeroZeroShouldBeEastNeighbourOfFifthZeroWhenThereIsOnlyThemInTheMap() throws Exception{
 		Location origin = Location.at(0, 0);
 		Location target = Location.at(50, 0);
 		
 		City mockedCity = mock(City.class);
 		when(mockedCity.locations()).thenReturn(Arrays.asList(origin, target));
+		when(mockedCity.routeBetween(origin, target)).thenReturn(new Street("Mocked-(0,0);(50,0):1"));
 		
 		origin.identifyNeighboursInside(mockedCity);
 		
 		assertTrue(origin.hasEastNeighbourAt(target));
 		assertTrue(origin.isNeighbourOf(target));
-		
 	}
 	
 	@Test
@@ -64,6 +65,13 @@ public class LocationTest {
 	@Test(expected = Exception.class)
 	public void shouldRaiseExceptionFromAInvalidString() throws Exception{
 		Location.from("0.0");
+	}
+	
+	@Test
+	public void timeShouldBeOne(){
+		Location origin = Location.at(0, 0);
+		Location target = Location.at(1, 0);;
+		assertEquals(1.0, Location.calculateTimeBetween(origin, target, 1), 0);
 	}
 	
 }

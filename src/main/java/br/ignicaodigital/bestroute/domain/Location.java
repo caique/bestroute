@@ -1,5 +1,7 @@
 package br.ignicaodigital.bestroute.domain;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -48,35 +50,39 @@ public class Location implements Comparable<Location>{
 	
 	public void identifyNeighboursInside(City city) {
 		for(Location location : city.locations()){
-			if(this.shouldHaveNorthNeighbourAt(location)) this.northNeighbour = location;
-			if(this.shouldHaveSouthNeighbourAt(location)) this.southNeighbour = location;
-			if(this.shouldHaveEastNeighbourAt(location)) this.eastNeighbour = location;
-			if(this.shouldHaveWestNeighbourAt(location)) this.westNeighbour = location;
+			if(this.shouldHaveNorthNeighbourAt(location, city)) this.northNeighbour = location;
+			if(this.shouldHaveSouthNeighbourAt(location, city)) this.southNeighbour = location;
+			if(this.shouldHaveEastNeighbourAt(location, city)) this.eastNeighbour = location;
+			if(this.shouldHaveWestNeighbourAt(location, city)) this.westNeighbour = location;
 		}
 	}
 
-	private boolean shouldHaveWestNeighbourAt(Location location) {
+	private Boolean shouldHaveWestNeighbourAt(Location location, City city) {
 		return this.intersectsInYWith(location)
 				&& this.x > location.x
-				&& ((this.westNeighbour == null) || (this.westNeighbour.x < location.x));
+				&& ((this.westNeighbour == null) || (this.westNeighbour.x < location.x))
+				&& (city.routeBetween(this, location) != null);
 	}
 
-	private Boolean shouldHaveEastNeighbourAt(Location location) {
+	private Boolean shouldHaveEastNeighbourAt(Location location, City city) {
 		return this.intersectsInYWith(location)
 				&& this.x < location.x
-				&& ((this.eastNeighbour == null) || (this.eastNeighbour.x > location.x));
+				&& ((this.eastNeighbour == null) || (this.eastNeighbour.x > location.x))
+				&& (city.routeBetween(this, location) != null);
 	}
 
-	private Boolean shouldHaveSouthNeighbourAt(Location location) {
+	private Boolean shouldHaveSouthNeighbourAt(Location location, City city) {
 		return this.intersectsInXWith(location)
 				&& this.y > location.y
-				&& ((this.southNeighbour == null) || (this.southNeighbour.y < location.y));
+				&& ((this.southNeighbour == null) || (this.southNeighbour.y < location.y))
+				&& (city.routeBetween(this, location) != null);
 	}
 
-	private Boolean shouldHaveNorthNeighbourAt(Location location) {
+	private Boolean shouldHaveNorthNeighbourAt(Location location, City city) {
 		return this.intersectsInXWith(location)
 			&& this.y < location.y
-			&& ((this.northNeighbour == null) || (this.northNeighbour.y > location.y));
+			&& ((this.northNeighbour == null) || (this.northNeighbour.y > location.y))
+			&& (city.routeBetween(this, location) != null);
 	}
 	
 	private Boolean intersectsInXWith(Location location) {
@@ -196,15 +202,19 @@ public class Location implements Comparable<Location>{
 	}
 
 	public static Double calculateTimeBetween(Location start, Location end, int speed) {
+		Double cartesianDistance = 0.0;
+		
 		if(start.intersectsInXWith(end)){
-			return new Double(Math.abs(start.y - end.y) / speed);
+			cartesianDistance = (double) Math.abs(start.y - end.y);
 		}
 		
 		if(start.intersectsInYWith(end)){
-			return new Double(Math.abs(start.x - end.x) / speed);
+			cartesianDistance = (double) Math.abs(start.x - end.x);
 		}
 		
-		return 0.0;
+		return new BigDecimal(cartesianDistance / (double) speed)
+				.setScale(2, RoundingMode.HALF_UP)
+				.doubleValue();
 	}
 	
 }

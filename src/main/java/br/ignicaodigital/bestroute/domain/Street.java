@@ -47,5 +47,9 @@ public class Street {
 	public Boolean passThrough(Location location) {
 		return this.start.is(location) || this.end.is(location);
 	}
-	
+
+	public String nameOfRoute() {
+		return this != null ? this.name : "";
+	}
+
 }

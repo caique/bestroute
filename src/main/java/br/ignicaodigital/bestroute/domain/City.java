@@ -66,33 +66,22 @@ public class City {
 	}
 
 	public Double timeBetween(Location origin, Location target) {
-		Street street = findStreetConnecting(origin, target);
-		
+		Street street = routeBetween(origin, target);
 		if(street == null) return 0.0;
 		
 		return street.timeToCross;
 	}
-	
-	public String nameOfConnectionBetween(Location origin, Location target) {
-		Street street = findStreetConnecting(origin, target);
-		
-		if(street == null) return "";
-		
-		return street.name;
-	}
 
-	private Street findStreetConnecting(Location origin, Location target) {
+	public Street routeBetween(Location origin, Location target) {
 		for(Street street : this.streets){
 			if(street.connects(origin, target)){
 				return street;
-			} else {
-				
 			}
 		}
 		
 		return null;
 	}
-
+	
 	public static City from(String filepath) throws Exception{
 		City city = new City();
 		

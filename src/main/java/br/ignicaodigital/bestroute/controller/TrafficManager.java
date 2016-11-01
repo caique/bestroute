@@ -39,7 +39,7 @@ public class TrafficManager {
 			pathAsString
 			.append(step.direction)
 			.append("-")
-			.append(city.nameOfConnectionBetween(step.origin, step.target));
+			.append(city.routeBetween(step.origin, step.target).nameOfRoute());
 			
 			if(!path.get(path.size()-1).equals(step)) pathAsString.append(", ");
 		}
